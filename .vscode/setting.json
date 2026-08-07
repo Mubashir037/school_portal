@@ -1,0 +1,11 @@
+{
+  "tailwindCSS.validate": false,
+  "tailwindCSS.classAttributes": [],
+  "tailwindCSS.experimental.classRegex": [],
+  "css.validate": false,
+  "scss.validate": false,
+  "less.validate": false,
+  "editor.showUnused": false,
+  "problems.decorations.enabled": false,
+  "editor.renderWhitespace": "none"
+}
