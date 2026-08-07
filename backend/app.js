@@ -5,6 +5,12 @@ const cors = require('cors');
 const adminroutes=require('./routes/AdminRoute')
 const dotenv = require('dotenv');
 const studentroutes=require('./routes/studentroutes');
+const helmet = require("helmet");
+const importRoutes = require('./routes/importRoute');
+
+//import
+app.use('/api/student/import', importRoutes);
+app.use(helmet());
 dotenv.config();
 app.use(express.json());
 app.use(cors());
