@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const adminroutes=require('./routes/AdminRoute')
 const dotenv = require('dotenv');
+const studentroutes=require('./routes/studentroutes');
 dotenv.config();
 app.use(express.json());
 app.use(cors());
@@ -13,7 +14,8 @@ mongoose.connect(process.env.MONGO_URI)
   .catch(err => console.log('❌ MongoDB error:', err));
 //admin
 app.use('/api/admin',adminroutes);
-
+//student crud
+app.use('/api/student',studentroutes);
 app.listen(5000,()=>{
     console.log("server is being hit");
 })
