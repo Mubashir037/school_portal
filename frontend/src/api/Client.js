@@ -6,11 +6,14 @@ function getToken() {
 
 async function request(path, options = {}) {
   const token = getToken();
+  const isFormData = options.body instanceof FormData;
 
   const res = await fetch(`${BASE_URL}${path}`, {
     ...options,
     headers: {
-      'Content-Type': 'application/json',
+      // don't set Content-Type for FormData — the browser sets the correct
+      // multipart boundary automatically; setting it manually breaks uploads
+      ...(isFormData ? {} : { 'Content-Type': 'application/json' }),
       ...(token ? { Authorization: `Bearer ${token}` } : {}),
       ...options.headers
     }
@@ -41,4 +44,14 @@ export const studentApi = {
     request(`/student/update/${grno}`, { method: 'PUT', body: JSON.stringify(payload) }),
   remove: (grno) =>
     request(`/student/deletestudent/${grno}`, { method: 'DELETE' })
+};
+
+export const importApi = {
+  preview: (file) => {
+    const formData = new FormData();
+    formData.append('file', file);
+    return request('/student/import/preview', { method: 'POST', body: formData });
+  },
+  confirm: (rows) =>
+    request('/student/import/confirm', { method: 'POST', body: JSON.stringify({ rows }) })
 };

@@ -82,13 +82,29 @@ export default function Students() {
               {students.length} student{students.length !== 1 ? 's' : ''} enrolled
             </p>
           </div>
-          <button
+          <div className="flex items-center gap-3">
+  <button
+    onClick={() => navigate('/import')}
+    className="font-body rounded-md border border-[#E4DFD3] px-5 py-2.5 text-[14px] font-medium text-[#1B2333]
+               transition hover:border-[#1B2333]/20 hover:bg-[#FAF8F3]"
+  >
+    Import from Excel
+  </button>
+  <button
+    onClick={() => setModalMode('add')}
+    className="font-body rounded-md bg-[#1B2333] px-5 py-2.5 text-[14px] font-medium text-white
+               transition hover:bg-[#0F1930]"
+  >
+    + Add student
+  </button>
+</div>
+          {/* <button
             onClick={() => setModalMode('add')}
             className="font-body rounded-md bg-[#1B2333] px-5 py-2.5 text-[14px] font-medium text-white
                        transition hover:bg-[#0F1930]"
           >
             + Add student
-          </button>
+          </button> */}
         </div>
 
         <div className="mb-6 flex flex-wrap gap-3">
