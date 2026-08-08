@@ -4,6 +4,7 @@ import Register from './pages/Register'
 import Dashboard from './pages/dashboard'
 import Students from './pages/Students'
 import ImportStudents from './pages/ImportStudents'
+import IssueCertificate from './pages/issuecertificate'
 
 function App() {
   const isLoggedIn = !!(localStorage.getItem('token') || sessionStorage.getItem('token'));
@@ -26,6 +27,7 @@ function App() {
         path="/import"
         element={isLoggedIn ? <ImportStudents /> : <Navigate to="/login" />}
       />
+      <Route path="/issue-certificate" element={isLoggedIn ? <IssueCertificate /> : <Navigate to="/login" />} />
     </Routes>
   )
 }

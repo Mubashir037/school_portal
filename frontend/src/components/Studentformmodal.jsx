@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react';
-import { studentApi } from '../api/Client';
+import { studentApi } from '../api/client';
 
 const emptyForm = {
   grno: '', first_name: '', last_name: '', father_name: '',
-  father_no: '', father_cnic: '', dob: '', class: '', cast: ''
+  father_no: '', father_cnic: '', dob: '', class: '', cast: '',
+  religion: '', place_of_birth: '', last_school_attended: '',
+  date_of_admission: '', class_at_admission: '', conduct: ''
 };
 
 export default function StudentFormModal({ mode, student, onClose, onSaved }) {
@@ -22,7 +24,13 @@ export default function StudentFormModal({ mode, student, onClose, onSaved }) {
         father_cnic: student.father_cnic || '',
         dob: student.dob ? student.dob.slice(0, 10) : '',
         class: student.class || '',
-        cast: student.cast || ''
+        cast: student.cast || '',
+        religion: student.religion || '',
+        place_of_birth: student.place_of_birth || '',
+        last_school_attended: student.last_school_attended || '',
+        date_of_admission: student.date_of_admission ? student.date_of_admission.slice(0, 10) : '',
+        class_at_admission: student.class_at_admission || '',
+        conduct: student.conduct || ''
       });
     }
   }, [mode, student]);
@@ -51,96 +59,46 @@ export default function StudentFormModal({ mode, student, onClose, onSaved }) {
   };
 
   const field = (label, name, type = 'text', extra = {}) => (
-    <div className={extra.disabled ? 'opacity-60' : ''}>
-      <label
-        className="mb-1.5 flex items-center gap-1 font-mono text-[10px] font-medium uppercase tracking-[0.12em]"
-        style={{ color: 'var(--ink-soft)' }}
-      >
-        {label}
-        {extra.required && <span style={{ color: 'var(--redink)' }}>*</span>}
-      </label>
+    <div>
+      <label className="block text-[13px] font-medium text-[#201F1D] mb-1.5">{label}</label>
       <input
         type={type}
         name={name}
         value={form[name]}
         onChange={handleChange}
         {...extra}
-        className="w-full border-0 border-b bg-transparent px-0.5 py-2 font-body text-[14.5px] outline-none
-                   transition-colors disabled:cursor-not-allowed"
-        style={{ borderColor: 'var(--rule)', color: 'var(--ink)' }}
-        onFocus={(e) => { e.target.style.borderColor = 'var(--brass)'; }}
-        onBlur={(e) => { e.target.style.borderColor = 'var(--rule)'; }}
+        className="w-full border border-[#E4E1DA] rounded-lg px-3.5 py-2.5 text-[14px] text-[#201F1D]
+                   bg-[#FAF9F7] placeholder:text-[#B3AFA6]
+                   focus:outline-none focus:ring-2 focus:ring-[#2B2A28]/10 focus:border-[#2B2A28] focus:bg-white
+                   transition"
       />
     </div>
   );
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4" style={{ backgroundColor: 'rgba(30,42,68,0.55)', backdropFilter: 'blur(2px)' }}>
-      <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,500;6..72,600&family=Archivo:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap');
-
-        :root {
-          --paper: #EFEEE3;
-          --paper-raised: #F8F7F0;
-          --ink: #1E2A44;
-          --ink-soft: #5C6270;
-          --rule: #D7D4C4;
-          --brass: #A9782E;
-          --brass-soft: #C9A55C;
-          --redink: #9C3B2E;
-        }
-
-        .font-display { font-family: 'Newsreader', ui-serif, Georgia, serif; }
-        .font-body { font-family: 'Archivo', ui-sans-serif, system-ui, sans-serif; }
-        .font-mono { font-family: 'IBM Plex Mono', ui-monospace, monospace; }
-
-        input::placeholder { color: var(--ink-soft); opacity: 0.45; }
-      `}</style>
-
-      <div
-        className="relative w-full max-w-2xl overflow-hidden rounded-lg shadow-2xl"
-        style={{ backgroundColor: 'var(--paper-raised)', maxHeight: '90vh' }}
-      >
-        {/* header, with a faint watermark seal for continuity with the dashboard */}
-        <div className="relative overflow-hidden border-b px-7 py-5" style={{ borderColor: 'var(--rule)' }}>
-          <div
-            aria-hidden="true"
-            className="pointer-events-none absolute -right-6 -top-8 h-28 w-28 rounded-full border-2"
-            style={{ borderColor: 'var(--brass)', opacity: 0.08, transform: 'rotate(-6deg)' }}
-          />
-          <div className="relative flex items-center justify-between">
-            <div>
-              <p className="font-mono text-[9.5px] tracking-[0.16em]" style={{ color: 'var(--brass)' }}>
-                {mode === 'add' ? 'NEW ENTRY' : 'EDIT ENTRY'}
-              </p>
-              <h2 className="font-display text-[19px] font-medium" style={{ color: 'var(--ink)' }}>
-                {mode === 'add' ? 'New student record' : `Edit record — GR ${student.grno}`}
-              </h2>
-            </div>
-            <button
-              onClick={onClose}
-              className="text-xl leading-none transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
-              style={{ color: 'var(--ink-soft)' }}
-              aria-label="Close"
-              onMouseEnter={(e) => { e.currentTarget.style.color = 'var(--ink)'; }}
-              onMouseLeave={(e) => { e.currentTarget.style.color = 'var(--ink-soft)'; }}
-            >
-              ×
-            </button>
-          </div>
+    <div className="fixed inset-0 bg-black/40 flex items-center justify-center p-4 z-50">
+      <div className="bg-white rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto shadow-2xl">
+        <div className="flex items-center justify-between px-7 py-5 border-b border-[#E4E1DA]">
+          <h2 className="text-[19px] font-semibold text-[#201F1D]">
+            {mode === 'add' ? 'Add student' : `Edit student — ${student.grno}`}
+          </h2>
+          <button
+            onClick={onClose}
+            className="text-[#8A877F] hover:text-[#201F1D] text-xl leading-none"
+            aria-label="Close"
+          >
+            ×
+          </button>
         </div>
 
-        <form onSubmit={handleSubmit} className="overflow-y-auto px-7 py-6" style={{ maxHeight: 'calc(90vh - 78px)' }}>
+        <form onSubmit={handleSubmit} className="px-7 py-6">
           {error && (
-            <div
-              className="mb-5 rounded-md border px-3.5 py-2.5 font-body text-[13px]"
-              style={{ backgroundColor: 'rgba(156,59,46,0.08)', borderColor: 'rgba(156,59,46,0.3)', color: 'var(--redink)' }}
-            >
+            <div className="bg-[#FBF6EC] border border-[#EDE0C4] text-[#8A6D2F] text-sm px-3.5 py-2.5 rounded-md mb-5">
               {error}
             </div>
           )}
 
-          <div className="mb-2 grid gap-x-6 gap-y-5 sm:grid-cols-2">
+          <div className="grid sm:grid-cols-2 gap-4 mb-2">
             {field('GR No', 'grno', 'text', { required: true, disabled: mode === 'edit' })}
             {field('Class', 'class')}
             {field('First name', 'first_name', 'text', { required: true })}
@@ -150,28 +108,29 @@ export default function StudentFormModal({ mode, student, onClose, onSaved }) {
             {field('Father CNIC', 'father_cnic', 'text', { placeholder: '13-digit CNIC' })}
             {field('Date of birth', 'dob', 'date')}
             {field('Cast', 'cast')}
+            {field('Religion', 'religion', 'text', { required: true })}
+            {field('Place of birth', 'place_of_birth', 'text', { required: true })}
+            {field('Last school attended', 'last_school_attended', 'text', { required: true })}
+            {field('Date of admission', 'date_of_admission', 'date', { required: true })}
+            {field('Class at admission', 'class_at_admission', 'text', { required: true })}
+            {field('Conduct', 'conduct', 'text', { required: true })}
           </div>
 
-          <div className="mt-8 flex items-center justify-end gap-3 border-t pt-5" style={{ borderColor: 'var(--rule)' }}>
+          <div className="flex items-center justify-end gap-3 mt-7 pt-5 border-t border-[#E4E1DA]">
             <button
               type="button"
               onClick={onClose}
-              className="rounded-md px-4 py-2.5 font-body text-[14px] font-medium transition-colors"
-              style={{ color: 'var(--ink-soft)' }}
-              onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = 'var(--paper)'; }}
-              onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = 'transparent'; }}
+              className="text-[14px] font-medium text-[#5B5954] px-4 py-2.5 rounded-lg hover:bg-[#F2F0EF] transition"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={loading}
-              className="rounded-md px-5 py-2.5 font-body text-[14px] font-medium text-white transition-colors disabled:opacity-50"
-              style={{ backgroundColor: 'var(--ink)' }}
-              onMouseEnter={(e) => { if (!loading) e.currentTarget.style.backgroundColor = '#141C30'; }}
-              onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = 'var(--ink)'; }}
+              className="text-[14px] font-medium text-white bg-[#2B2A28] px-5 py-2.5 rounded-lg
+                         hover:bg-[#201F1D] disabled:opacity-50 transition"
             >
-              {loading ? 'Saving…' : mode === 'add' ? 'Add record' : 'Save record'}
+              {loading ? 'Saving…' : mode === 'add' ? 'Add student' : 'Save changes'}
             </button>
           </div>
         </form>

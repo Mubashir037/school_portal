@@ -13,7 +13,13 @@ const HEADER_MAP = {
   'Father CNIC': 'father_cnic',
   'Date of Birth': 'dob',
   'Class': 'class',
-  'Cast': 'cast'
+  'Cast': 'cast',
+  'Religion': 'religion',
+  'Place of Birth': 'place_of_birth',
+  'Last School Attended': 'last_school_attended',
+  'Date of Admission': 'date_of_admission',
+  'Class at Admission': 'class_at_admission',
+  'Conduct': 'conduct'
 };
 
 const CNIC_REGEX = /^\d{13}$/;
@@ -35,6 +41,12 @@ function processRow(rawRow, seenGrNos) {
   if (!row.grno) return { skipReason: 'Missing GR No' };
   if (!row.first_name) return { skipReason: `GR ${row.grno} — missing First Name` };
   if (!row.class) return { skipReason: `GR ${row.grno} — missing Class` };
+  if (!row.religion) return { skipReason: `GR ${row.grno} — missing Religion` };
+  if (!row.place_of_birth) return { skipReason: `GR ${row.grno} — missing Place of Birth` };
+  if (!row.last_school_attended) return { skipReason: `GR ${row.grno} — missing Last School Attended` };
+  if (!row.date_of_admission) return { skipReason: `GR ${row.grno} — missing Date of Admission` };
+  if (!row.class_at_admission) return { skipReason: `GR ${row.grno} — missing Class at Admission` };
+  if (!row.conduct) return { skipReason: `GR ${row.grno} — missing Conduct` };
 
   // 3. duplicate GR No within the same file
   if (seenGrNos.has(row.grno)) {

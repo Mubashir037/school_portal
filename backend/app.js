@@ -7,6 +7,7 @@ const helmet = require('helmet');
 const adminroutes = require('./routes/AdminRoute');
 const studentroutes = require('./routes/studentroutes');
 const importRoutes = require('./routes/importRoute');
+const leavingCertificateRoute = require('./routes/leavingcertificate');
 
 dotenv.config();
 app.use(cors());
@@ -21,7 +22,7 @@ app.use((req, res, next) => {
 mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log('✅ MongoDB connected'))
   .catch(err => console.log('❌ MongoDB error:', err));
-
+app.use('/api/certificate', leavingCertificateRoute);
 app.use('/api/admin', adminroutes);
 app.use('/api/student', studentroutes);
 app.use('/api/student/import', importRoutes);

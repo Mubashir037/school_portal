@@ -100,8 +100,7 @@ export default function Dashboard() {
           />
 
           <FeatureTile
-            to="/certificates"
-            comingSoon
+            to="/issue-certificate"
             title="Result cards and certificates"
             description="Generate documents by GR No from templates"
             icon={
