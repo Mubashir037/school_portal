@@ -5,12 +5,15 @@ import Dashboard from './pages/dashboard'
 import Students from './pages/Students'
 import ImportStudents from './pages/ImportStudents'
 import IssueCertificate from './pages/issuecertificate'
-
+import CertificatesHub from './pages/Certificatehub'
+import IssueResultCard from './pages/issueresult'
 function App() {
   const isLoggedIn = !!(localStorage.getItem('token') || sessionStorage.getItem('token'));
 
   return (
     <Routes>
+      <Route path="/result-card" element={isLoggedIn ? <IssueResultCard /> : <Navigate to="/login" />} />
+      <Route path="/certificates" element={isLoggedIn ? <CertificatesHub /> : <Navigate to="/login" />} />
       <Route path="/" element={<Navigate to={isLoggedIn ? '/dashboard' : '/login'} />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />

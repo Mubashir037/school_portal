@@ -37,7 +37,7 @@ async function request(path, options = {}) {
 
 export const studentApi = {
   getAll: () => request('/student/getallstudents'),
-  getOne: (grno) => request(`/student/${grno}`),
+  getOne: (grno) => request(`/student/student/${grno}`),
   create: (payload) =>
     request('/student/addstudent', { method: 'POST', body: JSON.stringify(payload) }),
   update: (grno, payload) =>
@@ -56,6 +56,17 @@ export const certificateApi = {
       headers: { Authorization: `Bearer ${token}` }
     });
     if (!res.ok) throw new Error('Could not load certificate PDF');
+    const blob = await res.blob();
+    window.open(URL.createObjectURL(blob), '_blank');
+  }
+};
+
+export const resultCardApi = {
+  create: (payload) => request('/resultcard/create', { method: 'POST', body: JSON.stringify(payload) }),
+  viewPdf: async (id) => {
+    const token = getToken();
+    const res = await fetch(`${BASE_URL}/resultcard/${id}/pdf`, { headers: { Authorization: `Bearer ${token}` } });
+    if (!res.ok) throw new Error('Could not load PDF');
     const blob = await res.blob();
     window.open(URL.createObjectURL(blob), '_blank');
   }
