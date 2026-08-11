@@ -88,7 +88,7 @@ export default function Dashboard() {
 
           <FeatureTile
             to="/fees"
-            comingSoon
+            
             title="Fee management"
             description="Record payments and generate receipts"
             icon={

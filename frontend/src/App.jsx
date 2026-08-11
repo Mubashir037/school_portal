@@ -7,6 +7,7 @@ import ImportStudents from './pages/ImportStudents'
 import IssueCertificate from './pages/issuecertificate'
 import CertificatesHub from './pages/Certificatehub'
 import IssueResultCard from './pages/issueresult'
+import FeeManagement from './pages/fee'
 function App() {
   const isLoggedIn = !!(localStorage.getItem('token') || sessionStorage.getItem('token'));
 
@@ -17,6 +18,7 @@ function App() {
       <Route path="/" element={<Navigate to={isLoggedIn ? '/dashboard' : '/login'} />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
+      <Route path="/fees" element={isLoggedIn ? <FeeManagement /> : <Navigate to="/login" />}/>
 
       <Route
         path="/dashboard"
@@ -30,6 +32,7 @@ function App() {
         path="/import"
         element={isLoggedIn ? <ImportStudents /> : <Navigate to="/login" />}
       />
+      
       <Route path="/issue-certificate" element={isLoggedIn ? <IssueCertificate /> : <Navigate to="/login" />} />
     </Routes>
   )

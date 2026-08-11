@@ -9,9 +9,9 @@ const createResultCard = async (req, res) => {
     const card = await ResultCard.create(req.body);
     res.status(201).json(card);
   } catch (err) {
-    res.status(400).json({ message: err.message });
-  }
-};
+  console.error(err);
+  res.status(400).json({ message: err.message });}}
+
 
 const getResultCard = async (req, res) => {
   try {

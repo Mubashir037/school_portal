@@ -9,6 +9,7 @@ const studentroutes = require('./routes/studentroutes');
 const importRoutes = require('./routes/importRoute');
 const leavingCertificateRoute = require('./routes/leavingcertificate');
 const resultCardRoute = require('./routes/resultcard');
+const feeRoute = require('./routes/feeRoute');
 dotenv.config();
 app.use(cors());
 app.use(helmet());
@@ -27,7 +28,7 @@ app.use('/api/admin', adminroutes);
 app.use('/api/student', studentroutes);
 app.use('/api/student/import', importRoutes);
 app.use('/api/resultcard', resultCardRoute);
-
+app.use('/api/fee', feeRoute);
 app.listen(5000, () => {
   console.log('server is being hit');
 });

@@ -19,11 +19,10 @@ const resultCardSchema = new mongoose.Schema({
   remarks: { type: String }
 }, { timestamps: true });
 
-resultCardSchema.pre('save', function (next) {
+resultCardSchema.pre('save', function () {
   this.totalMarks = this.subjects.reduce((sum, s) => sum + s.totalMarks, 0);
   this.obtainedMarks = this.subjects.reduce((sum, s) => sum + s.obtainedMarks, 0);
   this.percentage = ((this.obtainedMarks / this.totalMarks) * 100).toFixed(2);
-  next();
 });
 
 module.exports = mongoose.model('ResultCard', resultCardSchema);

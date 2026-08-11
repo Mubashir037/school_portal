@@ -15,8 +15,8 @@ export default function CertificatesHub() {
         <div className="grid sm:grid-cols-2 gap-4">
           <FeatureTile to="/issue-certificate" title="Leaving certificate" description="School leaving certificate by GR No" icon={<span>📄</span>} />
           <FeatureTile to="/result-card" title="Result card" description="Term/annual result card" icon={<span>📊</span>} />
-          <FeatureTile to="/marksheet" comingSoon title="Marksheet" description="Subject-wise marksheet" icon={<span>📝</span>} />
-          <FeatureTile to="/character-certificate" comingSoon title="Character certificate" description="Conduct/character certificate" icon={<span>🎓</span>} />
+          {/* <FeatureTile to="/marksheet" comingSoon title="Marksheet" description="Subject-wise marksheet" icon={<span>📝</span>} />
+          <FeatureTile to="/character-certificate" comingSoon title="Character certificate" description="Conduct/character certificate" icon={<span>🎓</span>} /> */}
         </div>
       </div>
     </div>

@@ -1,5 +1,4 @@
 const BASE_URL = 'http://localhost:5000/api';
-
 function getToken() {
   return localStorage.getItem('token') || sessionStorage.getItem('token');
 }
@@ -37,7 +36,7 @@ async function request(path, options = {}) {
 
 export const studentApi = {
   getAll: () => request('/student/getallstudents'),
-  getOne: (grno) => request(`/student/student/${grno}`),
+  getOne: (grno) => request(`/student/getstudent/${grno}`),
   create: (payload) =>
     request('/student/addstudent', { method: 'POST', body: JSON.stringify(payload) }),
   update: (grno, payload) =>
@@ -67,6 +66,20 @@ export const resultCardApi = {
     const token = getToken();
     const res = await fetch(`${BASE_URL}/resultcard/${id}/pdf`, { headers: { Authorization: `Bearer ${token}` } });
     if (!res.ok) throw new Error('Could not load PDF');
+    const blob = await res.blob();
+    window.open(URL.createObjectURL(blob), '_blank');
+  }
+};
+
+export const feeApi = {
+  generate: (payload) => request('/fee/generate', { method: 'POST', body: JSON.stringify(payload) }),
+  markPaid: (id) => request(`/fee/${id}/pay`, { method: 'PUT' }),
+  getByStudent: (grno) => request(`/fee/${grno}`),
+  getAllUnpaid: () => request('/fee/unpaid'),
+  viewReceipt: async (id) => {
+    const token = getToken();
+    const res = await fetch(`${BASE_URL}/fee/${id}/receipt`, { headers: { Authorization: `Bearer ${token}` } });
+    if (!res.ok) throw new Error('Could not load receipt');
     const blob = await res.blob();
     window.open(URL.createObjectURL(blob), '_blank');
   }
