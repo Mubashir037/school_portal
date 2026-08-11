@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { studentApi } from '../api/client';
 import StudentFormModal from '../components/StudentFormModal';
+import * as XLSX from 'xlsx';
 
 export default function Students() {
   const [students, setStudents] = useState([]);
@@ -42,6 +43,42 @@ export default function Students() {
     }
   };
 
+  const handleExport = () => {
+    if (filtered.length === 0) {
+      alert('No students to export');
+      return;
+    }
+
+    const rows = filtered.map((s) => ({
+      'GR No': s.grno,
+      'First Name': s.first_name,
+      'Last Name': s.last_name,
+      'Father Name': s.father_name,
+      'Father Contact No': s.father_no,
+      'Father CNIC': s.father_cnic,
+      'Date of Birth': s.dob ? new Date(s.dob).toLocaleDateString('en-GB') : '',
+      'Class': s.class,
+      'Cast': s.cast,
+      'Religion': s.religion,
+      'Place of Birth': s.place_of_birth,
+      'Last School Attended': s.last_school_attended,
+      'Date of Admission': s.date_of_admission ? new Date(s.date_of_admission).toLocaleDateString('en-GB') : '',
+      'Class at Admission': s.class_at_admission,
+      'Conduct': s.conduct
+    }));
+
+    const worksheet = XLSX.utils.json_to_sheet(rows);
+    worksheet['!cols'] = Object.keys(rows[0]).map((key) => ({
+      wch: Math.max(12, key.length + 2)
+    }));
+
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Students');
+
+    const stamp = new Date().toISOString().slice(0, 10);
+    XLSX.writeFile(workbook, `students_export_${stamp}.xlsx`);
+  };
+
   const filtered = students.filter((s) => {
     const matchesGrno = s.grno?.toLowerCase().includes(search.toLowerCase());
     const matchesClass = s.class?.toLowerCase().includes(classSearch.toLowerCase());
@@ -75,6 +112,10 @@ export default function Students() {
   <button onClick={() => navigate('/import')}
     className="rounded-md border border-[#E4E1DA] px-5 py-2.5 text-[14px] font-medium text-[#201F1D] hover:bg-[#F2F0EF]">
     Import from Excel
+  </button>
+  <button onClick={handleExport}
+    className="rounded-md border border-[#E4E1DA] px-5 py-2.5 text-[14px] font-medium text-[#201F1D] hover:bg-[#F2F0EF]">
+    Export to Excel
   </button>
   <button onClick={() => setModalMode('add')}
     className="rounded-md bg-[#1B2333] px-5 py-2.5 text-[14px] font-medium text-white hover:bg-[#0F1930]">

@@ -113,7 +113,6 @@ export default function Dashboard() {
 
           <FeatureTile
             to="/analytics"
-            comingSoon
             title="Analytics"
             description="Enrollment and fee trends overview"
             icon={

@@ -85,6 +85,10 @@ export const feeApi = {
   }
 };
 
+export const analyticsApi = {
+  get: () => request('/analytics')
+};
+
 export const importApi = {
   preview: (file) => {
     const formData = new FormData();
