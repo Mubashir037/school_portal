@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { studentApi, resultCardApi } from '../api/client';
+import { studentApi, resultCardApi } from '../api/Client';
 
 export default function IssueResultCard() {
   const [grno, setGrno] = useState('');
