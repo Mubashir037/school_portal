@@ -9,7 +9,7 @@ const studentroutes = require('./routes/studentroutes');
 const importRoutes = require('./routes/importRoute');
 const leavingCertificateRoute = require('./routes/leavingcertificate');
 const resultCardRoute = require('./routes/resultcard');
-const feeRoute = require('./routes/feeRoute');
+const feeRoute = require('./routes/feeroute');
 const analyticsRoute = require('./routes/analyticsroute');
 dotenv.config();
 app.use(cors());
