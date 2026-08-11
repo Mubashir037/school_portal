@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { studentApi } from '../api/client';
+import { studentApi } from '../api/Client';
 
 const emptyForm = {
   grno: '', first_name: '', last_name: '', father_name: '',

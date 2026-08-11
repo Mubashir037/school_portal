@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { studentApi, feeApi } from '../api/client';
+import { studentApi, feeApi } from '../api/Client';
 
 export default function FeeManagement() {
   const [grno, setGrno] = useState('');

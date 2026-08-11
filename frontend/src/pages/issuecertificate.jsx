@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { studentApi, certificateApi } from '../api/client';
+import { studentApi, certificateApi } from '../api/Client';
 
 export default function IssueCertificate() {
   const [grno, setGrno] = useState('');

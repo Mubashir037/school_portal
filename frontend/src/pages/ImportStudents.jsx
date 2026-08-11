@@ -1,6 +1,6 @@
 import { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { importApi } from '../api/client';
+import { importApi } from '../api/Client';
 
 export default function ImportStudents() {
   const [file, setFile] = useState(null);
