@@ -31,6 +31,7 @@ app.use('/api/student/import', importRoutes);
 app.use('/api/resultcard', resultCardRoute);
 app.use('/api/fee', feeRoute);
 app.use('/api/analytics', analyticsRoute);
-app.listen(5000, () => {
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => {
   console.log('server is being hit');
 });
