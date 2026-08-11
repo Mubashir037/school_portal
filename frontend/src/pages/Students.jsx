@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { studentApi } from '../api/Client';
-import StudentFormModal from '../components/StudentFormModal';
+import StudentFormModal from '../components/Studentformmodal';
 import * as XLSX from 'xlsx';
 
 export default function Students() {
