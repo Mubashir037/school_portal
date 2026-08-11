@@ -1,42 +1,40 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 
-export default function Login() {
-  const [em, setEm] = useState('');
-  const [pass, setPass] = useState('');
+export default function Signup() {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [key, setKey] = useState('');
   const [showPass, setShowPass] = useState(false);
   const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
   const [loading, setLoading] = useState(false);
-  const [remember, setRemember] = useState(true);
 
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
+    setSuccess('');
     setLoading(true);
 
     try {
-      const res = await fetch('http://localhost:5000/api/admin/login', {
+      const res = await fetch('https://school-portal-xecs.onrender.com/api/admin/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ em, pass }),
+        body: JSON.stringify({ email, password, key }),
       });
 
       const data = await res.json();
 
       if (!res.ok) {
-        setError(data.message || 'Login failed');
+        setError(data.message || 'Registration failed');
         setLoading(false);
         return;
       }
 
-      if (remember) {
-        localStorage.setItem('token', data.token);
-      } else {
-        sessionStorage.setItem('token', data.token);
-      }
-      navigate('/dashboard');
+      setSuccess('Admin registered successfully. Redirecting to sign in…');
+      setTimeout(() => navigate('/login'), 1500);
     } catch (err) {
       setError('Could not reach server. Is the backend running?');
     } finally {
@@ -57,9 +55,8 @@ export default function Login() {
         .font-mono { font-family: 'IBM Plex Mono', ui-monospace, monospace; }
       `}</style>
 
-      {/* LEFT — ledger panel */}
+      {/* LEFT — ledger panel, same identity as Login */}
       <div className="relative lg:w-1/2 min-h-[320px] lg:min-h-screen flex flex-col justify-between overflow-hidden bg-[#16223A] px-10 py-12 sm:px-16 sm:py-16">
-        {/* ruled ledger lines, faint */}
         <div
           className="pointer-events-none absolute inset-0 opacity-[0.07]"
           style={{
@@ -67,10 +64,8 @@ export default function Login() {
               'repeating-linear-gradient(to bottom, transparent, transparent 43px, #D9AE6C 44px)',
           }}
         />
-        {/* margin rule, like a ledger page */}
         <div className="pointer-events-none absolute top-0 bottom-0 left-[64px] hidden w-px bg-[#D9AE6C]/[0.12] sm:block" />
 
-        {/* seal + wordmark */}
         <div className="relative flex items-center gap-3.5">
           <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-[#D9AE6C]/50 text-[#E9CC98]">
             <div className="flex h-8 w-8 items-center justify-center rounded-full border border-[#D9AE6C]/40 font-display text-[13px] tracking-tight">
@@ -87,22 +82,19 @@ export default function Login() {
           </div>
         </div>
 
-        {/* headline */}
         <div className="relative flex-1 max-w-md py-14 lg:py-0 flex flex-col justify-center">
           <p className="font-mono text-[11px] tracking-[0.2em] text-[#D9AE6C] mb-5">
-            01 — ADMIN ACCESS
+            02 — NEW ADMIN
           </p>
           <h1 className="font-display text-[36px] sm:text-[44px] font-medium leading-[1.12] tracking-tight text-[#F6F2E9] mb-6">
-            Every record, every receipt, kept in good order.
+            Set up access for your administration team.
           </h1>
           <p className="font-body text-[15px] leading-relaxed text-[#AEB6C7]">
-            Student files, fee collection and certificates, entered once
-            and trusted from then on. This portal is the school's ledger —
-            sign in to keep it current.
+            New admin accounts require an authorization key issued by the
+            school, keeping the portal limited to approved staff only.
           </p>
         </div>
 
-        {/* footer */}
         <div className="relative border-t border-[#D9AE6C]/[0.15] pt-6 flex items-center justify-between">
           <p className="font-mono text-[10px] tracking-[0.16em] text-[#8D97AE]">
             ADMINISTRATION PORTAL
@@ -113,17 +105,17 @@ export default function Login() {
         </div>
       </div>
 
-      {/* RIGHT — form */}
+      {/* RIGHT — signup form */}
       <div className="lg:w-1/2 flex items-center justify-center px-6 py-14 sm:px-16">
         <div className="w-full max-w-[360px]">
           <p className="font-mono text-[11px] tracking-[0.18em] text-[#B8873D] mb-3">
-            WELCOME BACK
+            REGISTER STAFF
           </p>
           <h2 className="font-display text-[26px] font-medium text-[#1B2333] mb-1.5">
-            Sign in
+            Create admin account
           </h2>
           <p className="font-body text-[14px] text-[#8B8A83] mb-9">
-            Enter your admin credentials to continue
+            You'll need the authorization key to register
           </p>
 
           <form onSubmit={handleSubmit} noValidate>
@@ -136,6 +128,15 @@ export default function Login() {
                 {error}
               </div>
             )}
+            {success && (
+              <div
+                role="status"
+                className="font-body flex items-start gap-2.5 rounded-md border border-[#CFDCC8] bg-[#F2F6EE] px-3.5 py-2.5 text-[13px] text-[#4B6B3D] mb-6"
+              >
+                <span className="mt-[3px] h-1.5 w-1.5 shrink-0 rounded-full bg-[#6E9A55]" />
+                {success}
+              </div>
+            )}
 
             <label
               htmlFor="email"
@@ -146,8 +147,8 @@ export default function Login() {
             <input
               id="email"
               type="email"
-              value={em}
-              onChange={(e) => setEm(e.target.value)}
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               required
               placeholder="admin@aqsaschool.edu.pk"
               className="font-body w-full rounded-md border border-[#E4DFD3] bg-[#FAF8F3] px-3.5 py-2.5 text-[14px]
@@ -162,14 +163,15 @@ export default function Login() {
             >
               Password
             </label>
-            <div className="relative mb-2">
+            <div className="relative mb-5">
               <input
                 id="password"
                 type={showPass ? 'text' : 'password'}
-                value={pass}
-                onChange={(e) => setPass(e.target.value)}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
                 required
-                placeholder="Enter your password"
+                minLength={6}
+                placeholder="Create a password"
                 className="font-body w-full rounded-md border border-[#E4DFD3] bg-[#FAF8F3] px-3.5 py-2.5 pr-10 text-[14px]
                            text-[#1B2333] placeholder:text-[#B7B2A4]
                            transition focus:border-[#B8873D] focus:bg-white focus:outline-none
@@ -195,20 +197,27 @@ export default function Login() {
               </button>
             </div>
 
-            <div className="mt-4 mb-7 flex items-center justify-between">
-              <label className="font-body flex cursor-pointer items-center gap-2 text-[13px] text-[#5B5954]">
-                <input
-                  type="checkbox"
-                  checked={remember}
-                  onChange={(e) => setRemember(e.target.checked)}
-                  className="rounded border-[#DEDBD5] text-[#B8873D] focus:ring-[#B8873D]/30"
-                />
-                Remember me
-              </label>
-              <a href="#" className="font-body text-[13px] text-[#5B5954] transition hover:text-[#1B2333] hover:underline">
-                Forgot password?
-              </a>
-            </div>
+            <label
+              htmlFor="key"
+              className="font-body block text-[13px] font-medium text-[#1B2333] mb-1.5"
+            >
+              Authorization key
+            </label>
+            <input
+              id="key"
+              type="password"
+              value={key}
+              onChange={(e) => setKey(e.target.value)}
+              required
+              placeholder="Enter the admin key"
+              className="font-body w-full rounded-md border border-[#E4DFD3] bg-[#FAF8F3] px-3.5 py-2.5 text-[14px]
+                         text-[#1B2333] placeholder:text-[#B7B2A4]
+                         transition focus:border-[#B8873D] focus:bg-white focus:outline-none
+                         focus:ring-2 focus:ring-[#B8873D]/20 mb-2"
+            />
+            <p className="font-body text-[12px] text-[#B7B2A4] mb-7">
+              Provided by the school — not the same as your password.
+            </p>
 
             <button
               type="submit"
@@ -224,20 +233,20 @@ export default function Login() {
                     <path className="opacity-90" fill="currentColor" d="M4 12a8 8 0 0 1 8-8V0C5.37 0 0 5.37 0 12h4Z" />
                   </svg>
                 )}
-                {loading ? 'Signing in…' : 'Sign in'}
+                {loading ? 'Creating account…' : 'Create account'}
               </span>
             </button>
           </form>
 
           <p className="font-body mt-8 text-center text-[13px] text-[#5B5954]">
-            New admin?{' '}
-            <Link to="/register" className="font-medium text-[#1B2333] hover:underline">
-              Create an account
+            Already have an account?{' '}
+            <Link to="/login" className="font-medium text-[#1B2333] hover:underline">
+              Sign in
             </Link>
           </p>
 
           <p className="font-mono mt-6 text-center text-[10px] tracking-[0.1em] text-[#B7B2A4]">
-            © {new Date().getFullYear()} AQSA HIGHER SECONDARY SCHOOL — ACCESS RESTRICTED TO AUTHORIZED STAFF
+            © {new Date().getFullYear()} AQSA HIGHER SECONDARY SCHOOL
           </p>
         </div>
       </div>
