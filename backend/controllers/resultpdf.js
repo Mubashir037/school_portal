@@ -1,4 +1,5 @@
-const puppeteer = require('puppeteer');
+const chromium = require('@sparticuz/chromium');
+const puppeteer = require('puppeteer-core');
 const fs = require('fs');
 const path = require('path');
 const ResultCard = require('../models/resulltcard');
@@ -76,7 +77,12 @@ const generateResultCardPdf = async (req, res) => {
       </div>
     </body></html>`;
 
-    const browser = await puppeteer.launch({ args: ['--no-sandbox'] });
+   // const browser = await puppeteer.launch({ args: ['--no-sandbox'] });
+   const browser = await puppeteer.launch({
+  args: chromium.args,
+  executablePath: await chromium.executablePath(),
+  headless: chromium.headless
+});
     const page = await browser.newPage();
     await page.setContent(html, { waitUntil: 'networkidle0' });
     const pdfBuffer = await page.pdf({ format: 'A4', printBackground: true });
