@@ -1,10 +1,11 @@
 const express = require('express');
 const app = express();
-app.use(cors());
+
 const mongoose = require('mongoose');
 const cors = require('cors');
 const dotenv = require('dotenv');
 const helmet = require('helmet');
+app.use(cors());
 const adminroutes = require('./routes/AdminRoute');
 const studentroutes = require('./routes/studentroutes');
 const importRoutes = require('./routes/importRoute');
